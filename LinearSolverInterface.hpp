@@ -2,11 +2,17 @@
 #ifndef __Math8650_LinearSolverInterface_HPP__
 #define __Math8650_LinearSolverInterface_HPP__
 
+#include <memory>
+
 #include "DenseMatrix.hpp"
+#include "DenseVector.hpp"
 
 namespace math8650
 {
 
+/**
+ *
+ */
 class LinearSolverInterface
 {
   
@@ -16,7 +22,7 @@ class LinearSolverInterface
 
 public:
 
-  //! \brief method solves a linear system using the Jacobi preconditioned CG 
+  //! \brief method solves a symmetric linear system using the Jacobi preconditioned CG 
   static void solveSystemCG(const std::shared_ptr<const DenseMatrix>& A, 
                             const std::shared_ptr<const DenseVector>& rhs, 
                             const std::shared_ptr<DenseVector>& sol);

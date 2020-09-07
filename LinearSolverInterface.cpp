@@ -17,7 +17,9 @@ solveSystemCG(const std::shared_ptr<const DenseMatrix>& A,
   std::cout << "============ BEGIN Krylov Solver Step ======================" << std::endl;
   std::cout << std::endl;
   std::cout << std::endl;
-  std::unique_ptr<const JacobiPreconditioner<DenseMatrix,DenseVector>> prec = std::make_unique(*A);
+//   std::unique_ptr<const JacobiPreconditioner<DenseMatrix,DenseVector>> 
+//   prec(new const JacobiPreconditioner<DenseMatrix,DenseVector>(*A));
+  auto prec = std::make_unique<const JacobiPreconditioner<DenseMatrix,DenseVector>>(*A);
   int maxiter_ = maxiter;
   double tol_ = tol;
   const auto solver_tag = CG(*A,*sol,*rhs,*prec,maxiter_,tol_);
@@ -47,7 +49,9 @@ solveSystemBiCGStab(const std::shared_ptr<const DenseMatrix>& A,
   std::cout << "============ BEGIN Krylov Solver Step ======================" << std::endl;
   std::cout << std::endl;
   std::cout << std::endl;
-  std::unique_ptr<const JacobiPreconditioner<DenseMatrix,DenseVector>> prec = std::make_unique(*A);
+//   std::unique_ptr<const JacobiPreconditioner<DenseMatrix,DenseVector>> 
+//   prec(new const JacobiPreconditioner<DenseMatrix,DenseVector>(*A));
+  auto prec = std::make_unique<const JacobiPreconditioner<DenseMatrix,DenseVector>>(*A);
   int maxiter_ = maxiter;
   double tol_ = tol;
 
