@@ -46,6 +46,7 @@ public:
   DenseMatrix  operator-(const DenseMatrix& B) const;
   DenseMatrix  operator*(const double num);
   DenseVector  operator*(const DenseVector& vec) const;
+  DenseVector  trans_mult(const DenseVector& vec) const;
 
   void getDiagonal(DenseVector& vec) const;
   void transpose(DenseMatrix& trans_mat);

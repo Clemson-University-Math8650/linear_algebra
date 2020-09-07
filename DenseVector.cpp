@@ -62,8 +62,8 @@ DenseVector::~DenseVector()
 
 DenseVector& DenseVector::operator=(const DenseVector& vec)
 {
-  if (m_is_allocated)
-    deallocate();
+//   if (m_is_allocated)
+//     deallocate();
   allocate(vec.size());
   for (std::size_t i = 0; i < vec.size(); ++i)
     m_vec[i] = vec(i);
