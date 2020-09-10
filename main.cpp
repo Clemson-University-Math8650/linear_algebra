@@ -83,7 +83,7 @@ void problem3()
 {
   const double a = 0.0;
   const double b = 1.0;
-  const int n = 1000;
+  const int n = 50;
 
   const double T_a = 0.0;
   const double T_b = 2.0;
