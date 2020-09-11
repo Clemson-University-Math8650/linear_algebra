@@ -83,21 +83,21 @@ void problem3()
 {
   const double a = 0.0;
   const double b = 1.0;
-  const int n = 50;
+  const int n = 500;
 
   const double T_a = 0.0;
   const double T_b = 2.0;
 
   const double alpha = 4.0;
 
-
   const auto f = [] (const double x)->double { return -4.0*x; };
-//   const auto T_exact = [](const double x)->double 
-//   { return exp(2.0)* (exp(2.0*x)- exp(-2.0*x))/(exp(4.0)-1.0) + x;  };
+  const auto T_exact = [](const double x)->double 
+  { return exp(2.0)* (exp(2.0*x)- exp(-2.0*x))/(exp(4.0)-1.0) + x;  };
 
   auto A = std::make_shared<DenseMatrix>(n-1,n-1);
   auto rhs = std::make_shared<DenseVector>(n-1);
   auto T = std::make_shared<DenseVector>(n-1);
+  auto T_vec_exact = std::make_shared<DenseVector>(n-1);
 
   const double h = (b - a)/n;
   std::vector<double> x(n+1);
@@ -108,6 +108,7 @@ void problem3()
   {
     (*A)(i,i) = - (2.0 + alpha * h*h);
     (*rhs)(i) = h*h*f(x[i+1]);
+    (*T_vec_exact)(i) = T_exact(x[i+1]);
   }
   (*rhs)(0) -= T_a;
   (*rhs)(n-2) -= T_b;
@@ -124,6 +125,15 @@ void problem3()
   LinearSolverInterface::solveSystemBiCG(A,rhs,T);
   std::cout << *T << std::endl;
   
+  std::cout << std::endl;
+  std::cout << std::endl;
+  std::cout << std::endl;
+  
+  // compare exact and numerical solution
+  for (std::size_t i (0); i < A->numRows(); ++i)
+  {
+    std::cout << x[i+1] << " " << (*T)(i) << " " << (*T_vec_exact)(i) << std::endl;
+  }
   
 }
 
