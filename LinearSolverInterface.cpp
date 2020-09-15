@@ -10,14 +10,14 @@ namespace math8650
   
 void 
 LinearSolverInterface::
-solveSystemCG(const std::shared_ptr<const DenseMatrix>& A, 
+solveSystemCG(const std::shared_ptr<const Matrix>& A, 
               const std::shared_ptr<const DenseVector>& rhs, 
               const std::shared_ptr<DenseVector>& sol)
 {
   std::cout << "============ BEGIN Krylov Solver Step ======================" << std::endl;
   std::cout << std::endl;
   std::cout << std::endl;
-  auto prec = std::make_unique<const JacobiPreconditioner<DenseMatrix,DenseVector>>(*A);
+  auto prec = std::make_unique<const JacobiPreconditioner<Matrix,DenseVector>>(*A);
   int maxiter_ = maxiter;
   double tol_ = tol;
   const auto solver_tag = CG(*A,*sol,*rhs,*prec,maxiter_,tol_);
@@ -40,14 +40,14 @@ solveSystemCG(const std::shared_ptr<const DenseMatrix>& A,
   
 void 
 LinearSolverInterface::
-solveSystemBiCG(const std::shared_ptr<const DenseMatrix>& A, 
+solveSystemBiCG(const std::shared_ptr<const Matrix>& A, 
                 const std::shared_ptr<const DenseVector>& rhs, 
                 const std::shared_ptr<DenseVector>& sol)  
 {
   std::cout << "============ BEGIN Krylov Solver Step ======================" << std::endl;
   std::cout << std::endl;
   std::cout << std::endl;
-  auto prec = std::make_unique<const JacobiPreconditioner<DenseMatrix,DenseVector>>(*A);
+  auto prec = std::make_unique<const JacobiPreconditioner<Matrix,DenseVector>>(*A);
   int maxiter_ = maxiter;
   double tol_ = tol;
 

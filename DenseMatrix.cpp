@@ -25,7 +25,6 @@ void DenseMatrix::allocate(std::size_t r, std::size_t s)
     }
     m_is_allocated = true;
   }
-  m_rows = r; m_cols = s;
 }
 /// end void allocate
 
@@ -39,7 +38,7 @@ void DenseMatrix::deallocate()
 }
 /// end void deallocate
 
-DenseMatrix::DenseMatrix(std::size_t p, std::size_t q, const double val)
+DenseMatrix::DenseMatrix(std::size_t p, std::size_t q, const double val) : Matrix(p,q)
 {
   allocate(p,q);
   for (std::size_t i = 0; i < p; ++i)
@@ -48,7 +47,7 @@ DenseMatrix::DenseMatrix(std::size_t p, std::size_t q, const double val)
 }
 /// end DenseMatrix
 
-DenseMatrix::DenseMatrix(const DenseMatrix& mat)
+DenseMatrix::DenseMatrix(const DenseMatrix& mat) : Matrix(mat.m_rows,mat.m_cols)
 {
   deallocate();
   allocate(mat.m_rows,mat.m_cols);
@@ -72,6 +71,7 @@ double& DenseMatrix::operator()(std::size_t i, std::size_t j)
 { return m_mat[i][j]; }
 /// end double& operator()
 
+/*
 const DenseMatrix& DenseMatrix::operator=(const DenseMatrix& mat)
 {
   deallocate();
@@ -143,6 +143,8 @@ DenseMatrix DenseMatrix::operator*(const double d)
 }
 /// end DenseMatrix& operator*
 
+*/
+
 DenseVector DenseMatrix::operator*(const DenseVector& vec) const
 {
   assert(m_is_allocated);
@@ -170,15 +172,6 @@ DenseVector DenseMatrix::trans_mult(const DenseVector& vec) const
   return temp_vector;
 }
 /// end Vector operator*
-
-void DenseMatrix::transpose(DenseMatrix& transpose_mat)
-{
-  transpose_mat.allocate(m_rows,m_cols);;
-  for (std::size_t i = 0; i < m_rows; i++)
-    for (std::size_t j = 0; j < m_cols; j++)
-      transpose_mat(j,i) = m_mat[i][j];
-}
-/// end void Transpose
 
 void DenseMatrix::getDiagonal(DenseVector& vec) const
 {

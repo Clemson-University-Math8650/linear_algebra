@@ -1,6 +1,7 @@
 
 #include <vector>
 
+#include "DenseMatrix.hpp"
 #include "JacobiPreconditioner.hpp"
 #include "LinearSolverInterface.hpp"
 
@@ -94,7 +95,7 @@ void problem3()
   const auto T_exact = [](const double x)->double 
   { return exp(2.0)* (exp(2.0*x)- exp(-2.0*x))/(exp(4.0)-1.0) + x;  };
 
-  auto A = std::make_shared<DenseMatrix>(n-1,n-1);
+  std::shared_ptr<Matrix> A = std::make_shared<DenseMatrix>(n-1,n-1);
   auto rhs = std::make_shared<DenseVector>(n-1);
   auto T = std::make_shared<DenseVector>(n-1);
   auto T_vec_exact = std::make_shared<DenseVector>(n-1);
