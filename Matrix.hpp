@@ -39,11 +39,6 @@ public:
   
   inline std::size_t numCols() const { return m_cols; }
   
-/*  virtual Matrix& operator+=(const Matrix& mat) = 0;
-  virtual Matrix& operator-=(const Matrix& B) = 0;
-  virtual Matrix  operator+(const Matrix& B) const = 0;
-  virtual Matrix  operator-(const Matrix& B) const = 0;
-  virtual Matrix  operator*(const double num) = 0;*/
   virtual DenseVector  operator*(const DenseVector& vec) const = 0;
   virtual DenseVector  trans_mult(const DenseVector& vec) const = 0;
 

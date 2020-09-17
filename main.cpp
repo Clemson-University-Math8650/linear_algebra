@@ -2,6 +2,8 @@
 #include <vector>
 
 #include "DenseMatrix.hpp"
+#include "SymmetricMatrix.hpp"
+#include "TridiagonalMatrix.hpp"
 #include "JacobiPreconditioner.hpp"
 #include "LinearSolverInterface.hpp"
 
@@ -21,8 +23,8 @@ void problem3();
 int main()
 {
   
-  problem1();
-  problem2();
+//  problem1();
+//  problem2();
   problem3();
 
   return 0;
@@ -84,7 +86,7 @@ void problem3()
 {
   const double a = 0.0;
   const double b = 1.0;
-  const int n = 500;
+  const int n = 100;
 
   const double T_a = 0.0;
   const double T_b = 2.0;
@@ -95,7 +97,7 @@ void problem3()
   const auto T_exact = [](const double x)->double 
   { return exp(2.0)* (exp(2.0*x)- exp(-2.0*x))/(exp(4.0)-1.0) + x;  };
 
-  std::shared_ptr<Matrix> A = std::make_shared<DenseMatrix>(n-1,n-1);
+  std::shared_ptr<Matrix> A = std::make_shared<TridiagonalMatrix>(n-1,n-1);
   auto rhs = std::make_shared<DenseVector>(n-1);
   auto T = std::make_shared<DenseVector>(n-1);
   auto T_vec_exact = std::make_shared<DenseVector>(n-1);
