@@ -5,26 +5,18 @@
 namespace math8650
 {
 
-void SymmetricMatrix::allocate(std::size_t r, std::size_t s)
+void SymmetricMatrix::allocate(std::size_t nrows, std::size_t ncols)
 {
-  if (!((r > 0) && (s > 0) && (r==s)))
+  if (!((nrows > 0) && (ncols > 0) && (nrows==ncols)))
   {
     m_is_allocated = false;
   } else {
-  
-    try {
-      
-      m_mat = new double*[r];
-      // create a matrix only for the lower triangular part
-      for (std::size_t i = 0; i < r; ++i)
-        m_mat[i] = new double[i+1];
-      
-    } catch(std::bad_alloc& bad) {
-      
-      std::cerr << "bad alloc caught: " << bad.what() << std::endl;
-      throw;
-    }
+    m_mat = new double*[nrows];
+    // create a matrix only for the lower triangular part
+    for (std::size_t i = 0; i < nrows; ++i)
+      m_mat[i] = new double[i+1];
     m_is_allocated = true;
+    m_rows = nrows; m_cols = ncols;
   }
 }
 /// end void allocate
@@ -39,24 +31,14 @@ void SymmetricMatrix::deallocate()
 }
 /// end void deallocate
 
-SymmetricMatrix::SymmetricMatrix(std::size_t p, std::size_t q, const double val) : Matrix(p,q)
+SymmetricMatrix::SymmetricMatrix(std::size_t nrows, std::size_t ncols, const double val)
 {
-  allocate(p,q);
-  for (std::size_t i = 0; i < p; ++i)
+  allocate(nrows,ncols);
+  for (std::size_t i = 0; i < m_rows; ++i)
     for (std::size_t j = 0; j < i+1; ++j)
       m_mat[i][j] = val;
 }
 /// end SymmetricMatrix
-
-SymmetricMatrix::SymmetricMatrix(const SymmetricMatrix& mat) : Matrix(mat.m_rows,mat.m_cols)
-{
-  deallocate();
-  allocate(mat.m_rows,mat.m_cols);
-  for (std::size_t i = 0; i < m_rows; i++)
-    for (std::size_t j = 0; j < m_cols; j++)
-      m_mat[i][j] = mat.m_mat[i][j];
-}
-/// end copy Constructor SymmetricMatrix
 
 SymmetricMatrix::~SymmetricMatrix()
 {
@@ -66,7 +48,8 @@ SymmetricMatrix::~SymmetricMatrix()
 
 double SymmetricMatrix::operator()(std::size_t i, std::size_t j) const
 {
-  if (i >= j)	
+  assert((i >= 0) && (i < m_rows) && (j >= 0) && (j < m_cols));
+  if (i >= j)
     return m_mat[i][j];
   else
     return m_mat[j][i];
@@ -75,10 +58,12 @@ double SymmetricMatrix::operator()(std::size_t i, std::size_t j) const
 
 double& SymmetricMatrix::operator()(std::size_t i, std::size_t j)
 {
+  assert((i >= 0) && (i < m_rows) && (j >= 0) && (j < m_cols));
   if (i >= j)
     return m_mat[i][j];
   else 
-    throw std::runtime_error("Error in \"SymmetricMatrix::operator()\" accessing unallocated upper triangular entries");
+    throw std::runtime_error("Error in \"SymmetricMatrix::operator()\" "
+                             "accessing unallocated upper triangular entries");
 }
 /// end double& operator()
 
@@ -91,7 +76,12 @@ DenseVector SymmetricMatrix::operator*(const DenseVector& vec) const
   
   DenseVector temp_vector(m_rows,0.0);
   for (std::size_t i = 0; i < m_rows; i++)
-    for (std::size_t j = 0; j < m_cols; j++) temp_vector[i] += (*this)(i,j)*vec[j];
+    for (std::size_t j = 0; j < i+1; j++) 
+    {
+      temp_vector[i] += (*this)(i,j)*vec[j];
+      if (i != j)
+        temp_vector[j] += (*this)(j,i)*vec[i];
+    }
   return temp_vector;
 }
 /// end Vector operator*

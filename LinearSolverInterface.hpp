@@ -4,8 +4,12 @@
 
 #include <memory>
 
-#include "Matrix.hpp"
 #include "DenseVector.hpp"
+
+#include "DenseMatrix.hpp"
+#include "SymmetricMatrix.hpp"
+#include "TridiagonalMatrix.hpp"
+#include "UpperTriangularMatrix.hpp"
 
 namespace math8650
 {
@@ -23,15 +27,45 @@ class LinearSolverInterface
 public:
 
   //! \brief method solves a symmetric linear system using the Jacobi preconditioned CG method
-  static void solveSystemCG(const std::shared_ptr<const Matrix>& A, 
+  static void solveSystemCG(const std::shared_ptr<const DenseMatrix>& A, 
                             const std::shared_ptr<const DenseVector>& rhs, 
                             const std::shared_ptr<DenseVector>& sol);
 
   //! \brief method solves a linear system using the Jacobi preconditioned BiCG method
-  static void solveSystemBiCG(const std::shared_ptr<const Matrix>& A, 
+  static void solveSystemBiCG(const std::shared_ptr<const DenseMatrix>& A, 
                               const std::shared_ptr<const DenseVector>& rhs, 
                               const std::shared_ptr<DenseVector>& sol);
 
+  //! \brief method solves a symmetric linear system using the Jacobi preconditioned CG method
+  static void solveSystemCG(const std::shared_ptr<const SymmetricMatrix>& A, 
+                            const std::shared_ptr<const DenseVector>& rhs, 
+                            const std::shared_ptr<DenseVector>& sol);
+
+  //! \brief method solves a linear system using the Jacobi preconditioned BiCG method
+  static void solveSystemBiCG(const std::shared_ptr<const SymmetricMatrix>& A, 
+                              const std::shared_ptr<const DenseVector>& rhs, 
+                              const std::shared_ptr<DenseVector>& sol);
+
+  //! \brief method solves a symmetric linear system using the Jacobi preconditioned CG method
+  static void solveSystemCG(const std::shared_ptr<const TridiagonalMatrix>& A, 
+                            const std::shared_ptr<const DenseVector>& rhs, 
+                            const std::shared_ptr<DenseVector>& sol);
+
+  //! \brief method solves a linear system using the Jacobi preconditioned BiCG method
+  static void solveSystemBiCG(const std::shared_ptr<const TridiagonalMatrix>& A, 
+                              const std::shared_ptr<const DenseVector>& rhs, 
+                              const std::shared_ptr<DenseVector>& sol);
+
+  //! \brief method solves a symmetric linear system using the Jacobi preconditioned CG method
+  static void solveSystemCG(const std::shared_ptr<const UpperTriangularMatrix>& A, 
+                            const std::shared_ptr<const DenseVector>& rhs, 
+                            const std::shared_ptr<DenseVector>& sol);
+
+  //! \brief method solves a linear system using the Jacobi preconditioned BiCG method
+  static void solveSystemBiCG(const std::shared_ptr<const UpperTriangularMatrix>& A, 
+                              const std::shared_ptr<const DenseVector>& rhs, 
+                              const std::shared_ptr<DenseVector>& sol);
+  
 };
 
 }

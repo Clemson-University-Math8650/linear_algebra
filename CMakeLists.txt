@@ -8,13 +8,14 @@ set(CMAKE_CXX_FLAGS "-std=c++14 -g -fopenmp -O3 -Wall -Wextra")
 
 add_executable(linear_algebra DenseVector.hpp 
                               DenseVector.cpp
-			      Matrix.hpp
-			      SymmetricMatrix.hpp
-			      SymmetricMatrix.cpp
-			      TridiagonalMatrix.cpp
-			      TridiagonalMatrix.hpp
                               DenseMatrix.hpp
                               DenseMatrix.cpp
+                              SymmetricMatrix.hpp
+                              SymmetricMatrix.cpp
+                              TridiagonalMatrix.cpp
+                              TridiagonalMatrix.hpp
+                              UpperTriangularMatrix.cpp
+                              UpperTriangularMatrix.hpp
                               LinearSolverInterface.hpp
                               LinearSolverInterface.cpp
                               main.cpp)

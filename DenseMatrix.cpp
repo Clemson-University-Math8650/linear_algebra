@@ -38,7 +38,7 @@ void DenseMatrix::deallocate()
 }
 /// end void deallocate
 
-DenseMatrix::DenseMatrix(std::size_t p, std::size_t q, const double val) : Matrix(p,q)
+DenseMatrix::DenseMatrix(std::size_t p, std::size_t q, const double val)
 {
   allocate(p,q);
   for (std::size_t i = 0; i < p; ++i)
@@ -46,16 +46,6 @@ DenseMatrix::DenseMatrix(std::size_t p, std::size_t q, const double val) : Matri
       m_mat[i][j] = val;
 }
 /// end DenseMatrix
-
-DenseMatrix::DenseMatrix(const DenseMatrix& mat) : Matrix(mat.m_rows,mat.m_cols)
-{
-  deallocate();
-  allocate(mat.m_rows,mat.m_cols);
-  for (std::size_t i = 0; i < m_rows; i++)
-    for (std::size_t j = 0; j < m_cols; j++)
-      m_mat[i][j] = mat.m_mat[i][j];
-}
-/// end copy Constructor DenseMatrix
 
 DenseMatrix::~DenseMatrix()
 {
@@ -71,79 +61,6 @@ double& DenseMatrix::operator()(std::size_t i, std::size_t j)
 { return m_mat[i][j]; }
 /// end double& operator()
 
-/*
-const DenseMatrix& DenseMatrix::operator=(const DenseMatrix& mat)
-{
-  deallocate();
-  allocate(mat.m_rows,mat.m_cols);
-  for (std::size_t i = 0; i < m_rows; i++)
-    for (std::size_t j = 0; j < m_cols; j++)
-      m_mat[i][j] = mat.m_mat[i][j];
-  return *this;
-}
-/// end DenseMatrix& operator=
-
-DenseMatrix& DenseMatrix::operator+=(const DenseMatrix& mat)
-{
-  assert(m_is_allocated);
-  if (m_cols != mat.m_cols || m_rows != mat.m_rows)
-    throw std::runtime_error("Error in \"DenseMatrix::operator+=\" "
-                             "matrix sizes do not agree");
-  for (std::size_t i = 0; i < m_rows; i++)
-    for (std::size_t j = 0; j < m_cols; j++)
-      m_mat[i][j] += mat.m_mat[i][j];
-  return *this;
-}
-/// end DenseMatrix& operator+=
-
-DenseMatrix& DenseMatrix::operator-=(const DenseMatrix& mat)
-{
-  assert(m_is_allocated);
-  if (m_cols != mat.m_cols || m_rows != mat.m_rows)
-    throw std::runtime_error("Error in \"DenseMatrix::operator-=\" "
-                             "matrix sizes do not agree");
-  for (std::size_t i = 0; i < m_rows; i++)
-    for (std::size_t j = 0; j < m_cols; j++)
-      m_mat[i][j] += mat.m_mat[i][j];
-  return *this;
-}
-/// end DenseMatrix& operator-=
-
-DenseMatrix DenseMatrix::operator+(const DenseMatrix& mat) const
-{
-  assert(m_is_allocated);
-  if (m_cols != mat.m_cols || m_rows != mat.m_rows)
-    throw std::runtime_error("Error in \"DenseMatrix::operator+\" "
-                             "matrix sizes do not agree");
-  DenseMatrix sum(*this);
-  sum += mat;
-  return sum;
-}
-/// end DenseMatrix operator+
-
-DenseMatrix DenseMatrix::operator-(const DenseMatrix& mat) const
-{
-  assert(m_is_allocated);
-  if (m_cols != mat.m_cols || m_rows != mat.m_rows)
-    throw std::runtime_error("Error in \"DenseMatrix::operator+\" "
-                             "matrix sizes do not agree");
-  DenseMatrix sum(*this);
-  sum -= mat;
-  return sum;
-}
-/// end DenseMatrix& operator-
-
-DenseMatrix DenseMatrix::operator*(const double d)
-{
-  assert(m_is_allocated);
-  DenseMatrix tmp(*this);
-  for (std::size_t i = 0; i < m_rows; i++)
-    for (std::size_t j = 0; j < m_cols; j++) tmp(i,j) *= d;
-  return tmp;
-}
-/// end DenseMatrix& operator*
-
-*/
 
 DenseVector DenseMatrix::operator*(const DenseVector& vec) const
 {
