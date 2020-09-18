@@ -1,10 +1,10 @@
 
-#include "UpperTriangularMatrix.hpp"
+#include "LowerTriangularMatrix.hpp"
 
 namespace math8650
 {
 
-void UpperTriangularMatrix::allocate(std::size_t nrows, std::size_t ncols)
+void LowerTriangularMatrix::allocate(std::size_t nrows, std::size_t ncols)
 {
   if (!((nrows > 0) && (ncols > 0) && (nrows==ncols)))
   {
@@ -13,13 +13,13 @@ void UpperTriangularMatrix::allocate(std::size_t nrows, std::size_t ncols)
     m_rows = nrows; m_cols = ncols;
     m_mat = new double*[m_rows];
     for (std::size_t i = 0; i < m_rows; ++i)
-      m_mat[i] = new double[m_rows-i];
+      m_mat[i] = new double[i+1];
     m_is_allocated = true;
   }
 }
 /// end void allocate
 
-void UpperTriangularMatrix::deallocate()
+void LowerTriangularMatrix::deallocate()
 {
   if (!m_is_allocated)
     return;
@@ -29,73 +29,73 @@ void UpperTriangularMatrix::deallocate()
 }
 /// end void deallocate
 
-UpperTriangularMatrix::UpperTriangularMatrix(std::size_t p, std::size_t q, const double val)
+LowerTriangularMatrix::LowerTriangularMatrix(std::size_t p, std::size_t q, const double val)
 {
   allocate(p,q);
   for (std::size_t i = 0; i < p; ++i)
-    for (std::size_t j = 0; j < m_rows-i; ++j)
+    for (std::size_t j = 0; j <= i; ++j)
       m_mat[i][j] = val;
 }
-/// end UpperTriangularMatrix
+/// end LowerTriangularMatrix
 
-UpperTriangularMatrix::~UpperTriangularMatrix()
+LowerTriangularMatrix::~LowerTriangularMatrix()
 {
   deallocate();
 }
-/// end Destructor ~UpperTriangularMatrix
+/// end Destructor ~LowerTriangularMatrix
 
-double UpperTriangularMatrix::operator()(std::size_t i, std::size_t j) const
+double LowerTriangularMatrix::operator()(std::size_t i, std::size_t j) const
 {
-  if (j >= i)
-    return m_mat[i][j-i];
+  if (i <= j)
+    return m_mat[i][j];
   else
     return 0.0;
 }
 /// end double operator()
 
-double& UpperTriangularMatrix::operator()(std::size_t i, std::size_t j)
+double& LowerTriangularMatrix::operator()(std::size_t i, std::size_t j)
 {
-  if (j >= i)
-    return m_mat[i][j-i];
+  if (i <= j)
+    return m_mat[i][j];
   else
-    throw std::runtime_error("Error in \"UpperTriangularMatrix::operator()\" accessing unallocated lower triangular entries");
+    throw std::runtime_error("Error in \"LowerTriangularMatrix::operator()\" accessing unallocated upper triangular entries");
 }
 /// end double& operator()
 
-DenseVector UpperTriangularMatrix::operator*(const DenseVector& vec) const
+DenseVector LowerTriangularMatrix::operator*(const DenseVector& vec) const
 {
   assert(m_is_allocated);
   if (m_cols != vec.size())
-    throw std::runtime_error("Error in \"UpperTriangularMatrix::operator*\" "
+    throw std::runtime_error("Error in \"LowerTriangularMatrix::operator*\" "
                              "addition not possible, matrix sizes do not agree");
   
   DenseVector temp_vector(m_rows,0.0);
   for (std::size_t i = 0; i < m_rows; i++)
-    for (std::size_t j = i; j < m_cols; j++) temp_vector[i] += m_mat[i][j-i]*vec[j];
+    for (std::size_t j = 0; j <= i; j++) temp_vector[i] += (*this)(i,j)*vec[j];
   return temp_vector;
 }
 /// end Vector operator*
 
-DenseVector UpperTriangularMatrix::trans_mult(const DenseVector& vec) const
+DenseVector LowerTriangularMatrix::trans_mult(const DenseVector& vec) const
 {
   assert(m_is_allocated);
   if (m_cols != vec.size())
-    throw std::runtime_error("Error in \"UpperTriangularMatrix::trans_mult\" "
+    throw std::runtime_error("Error in \"LowerTriangularMatrix::trans_mult\" "
                              "addition not possible, matrix sizes do not agree");
   
   DenseVector temp_vector(m_rows,0.0);
   for (std::size_t i = 0; i < m_rows; i++)
-    for (std::size_t j = 0; j < m_cols; j++)
+    for (std::size_t j = 0; j <= m_cols; j++)
       temp_vector[i] += (*this)(j,i)*vec[j];
   return temp_vector;
 }
 /// end Vector operator*
 
-void UpperTriangularMatrix::getDiagonal(DenseVector& vec) const
+void LowerTriangularMatrix::getDiagonal(DenseVector& vec) const
 {
   vec.allocate(m_rows);
   for (std::size_t i = 0; i < m_rows; i++)
-    vec(i) = m_mat[i][0];
+    vec(i) = m_mat[i][i];
 }
 /// end void Transpose
 

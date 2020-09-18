@@ -14,6 +14,8 @@ add_executable(linear_algebra DenseVector.hpp
                               SymmetricMatrix.cpp
                               TridiagonalMatrix.cpp
                               TridiagonalMatrix.hpp
+                              LowerTriangularMatrix.cpp
+                              LowerTriangularMatrix.hpp
                               UpperTriangularMatrix.cpp
                               UpperTriangularMatrix.hpp
                               LinearSolverInterface.hpp
