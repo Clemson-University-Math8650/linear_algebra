@@ -10,6 +10,14 @@ add_executable(linear_algebra DenseVector.hpp
                               DenseVector.cpp
                               DenseMatrix.hpp
                               DenseMatrix.cpp
+                              SymmetricMatrix.hpp
+                              SymmetricMatrix.cpp
+                              TridiagonalMatrix.cpp
+                              TridiagonalMatrix.hpp
+                              LowerTriangularMatrix.cpp
+                              LowerTriangularMatrix.hpp
+                              UpperTriangularMatrix.cpp
+                              UpperTriangularMatrix.hpp
                               LinearSolverInterface.hpp
                               LinearSolverInterface.cpp
                               main.cpp)
